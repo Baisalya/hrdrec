@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.app.hrdrec.R
@@ -45,7 +46,6 @@ class Organization : AppCompatActivity() {
         } else {
             // Hide the empty data message
             emptyDataTextView.visibility = View.GONE
-
             // Update the adapter with non-empty data
             binding.recyclerView.adapter = albumDataAdapter
             albumDataAdapter.updateAlbumData(mObj.paths)
@@ -79,9 +79,6 @@ class Organization : AppCompatActivity() {
 
                         else -> {
 
-//                        val intent = Intent(this@Organization, Organization::class.java)
-//                        intent.putExtra("mObj",data)
-//                        startActivity(intent)
                         }
                     }
                 }
