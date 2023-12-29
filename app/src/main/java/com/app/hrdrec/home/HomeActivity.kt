@@ -158,7 +158,7 @@ class HomeActivity : AppCompatActivity(), HomeViewModel.CallBackLogin {
 */
 
 
-       // Create a method to handle item clicks
+/*       // Create a method to handle item clicks
        fun handleItemClick(data: ModuleData) {
            Log.e("Data", "onClick" + data.name)
 
@@ -263,6 +263,62 @@ class HomeActivity : AppCompatActivity(), HomeViewModel.CallBackLogin {
                     handleItemClick(ModuleData(name = itemName))
                 }
             }
+
+            true
+        }*/
+fun handleItemClick(data: ModuleData) {
+    Log.e("Data", "onClick" + data.name)
+
+    when (data.name) {
+        "Organization" -> {
+            val intent = Intent(this@HomeActivity, Organization::class.java)
+            intent.putExtra("mObj", data)
+            startActivity(intent)
+        }
+        "User Administration" -> {
+            val admin = Intent(this@HomeActivity, Admin::class.java)
+            admin.putExtra("mObj", data)
+            startActivity(admin)
+        }
+        "Leave Management", "Leaves", "Timesheets" -> {
+            if ((moduleSize == 2 || moduleSize == 3) &&
+                (data.name == "Leaves" || data.name == "Timesheets")
+            ) {
+                val intent = Intent(
+                    this@HomeActivity,
+                    if (data.name == "Leaves") AllLeavesActivity::class.java else TimeSchedulerActivity::class.java
+                )
+                intent.putExtra("mObj", data)
+                startActivity(intent)
+            } else {
+                val intent = Intent(this@HomeActivity, ManagerAuthorisedActivity::class.java)
+                intent.putExtra("mObj", data)
+                intent.putExtra("from", if (data.name == "Leaves") "authLeave" else "authTime")
+                startActivity(intent)
+            }
+        }
+        else -> {
+            val intent = Intent(this@HomeActivity, Organization::class.java)
+            intent.putExtra("mObj", data)
+            startActivity(intent)
+        }
+    }
+}
+
+// Set item click listener for albumDataAdapter
+        albumDataAdapter.setItemClick(object : ClickInterface<ModuleData> {
+            override fun onClick(data: ModuleData) {
+                handleItemClick(data)
+            }
+        })
+
+// Set item click listener for bottomNavigation
+        binding.bottomNavigation.setOnNavigationItemSelectedListener { menuItem ->
+            val itemName = menuItem.title.toString()
+
+            // Create ModuleData instance based on the bottomNavigation item name
+            val data = ModuleData(name = itemName)
+            handleItemClick(data)
 
             true
         }
