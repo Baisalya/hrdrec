@@ -106,32 +106,19 @@ fun handleItemClick(data: ModuleData) {
     }
 }
 
-// Set item click listener for albumDataAdapter
+// albumDataAdapter
         albumDataAdapter.setItemClick(object : ClickInterface<ModuleData> {
             override fun onClick(data: ModuleData) {
                 handleItemClick(data)
             }
         })
 
-// Set item click listener for bottomNavigation
-/*
+//  bottomNavigation
         binding.bottomNavigation.setOnNavigationItemSelectedListener { menuItem ->
             val itemName = menuItem.title.toString()
 
-            // Create ModuleData instance based on the bottomNavigation item name
-            val data = ModuleData(name = itemName)
-            handleItemClick(data)  // This line is calling handleItemClick for bottomNavigation item
-
-            true
-        }
-*/
-        binding.bottomNavigation.setOnNavigationItemSelectedListener { menuItem ->
-            val itemName = menuItem.title.toString()
-
-            // Create ModuleData instance based on the bottomNavigation item name
             val data = when (itemName) {
                 "Organization" -> {
-                    // Set paths for the "Organization" module
                     val organizationPaths = listOf(
                         Paths(3, "Organization Profile", false, "/organizationProfiles"),
                         Paths(4, "Locations", false, "/locationList"),
@@ -145,7 +132,6 @@ fun handleItemClick(data: ModuleData) {
                     ModuleData(id = 1, name = itemName, description = "This is organization module", paths = ArrayList(organizationPaths))
                 }
                 "Users" -> {
-                    // Set paths for the "Users" module
                     val usersPaths = listOf(
                         Paths(12, "Roles", false, "/roleList"),
                         Paths(13, "Users", false, "/userList")
@@ -153,7 +139,6 @@ fun handleItemClick(data: ModuleData) {
                     ModuleData(id = 2, name = itemName, description = "This is User administration module", paths = ArrayList(usersPaths))
                 }
                 "Employees" -> {
-                    // Set paths for the "Employees" module
                     val employeesPaths = listOf(
                         Paths(8, "Employees", false, "/employeeList"),
                         Paths(9, "Leave Balances", false, "/leaveBalances")
@@ -198,19 +183,26 @@ fun handleItemClick(data: ModuleData) {
     private fun setObserver() {
         homeViewModel.moduleData.observe(this) { mList ->
             moduleSize = mList.size
-            Log.d("TAG", "Module Data Received : ${mList.size}")
+            Log.d("TAG", "Module Data Received: ${mList.size}")
             albumDataAdapter.updateAlbumData(mList)
 
-            // Clear existing menu items
             binding.bottomNavigation.menu.clear()
 
-            // Add new menu items based on recyclerView1 data
             for (item in mList) {
-                binding.bottomNavigation.menu.add(Menu.NONE, Menu.NONE, Menu.NONE, item.name)
-                    /*.setIcon(*//* Set your icon here if needed *//*)*/
+                val menuItem = binding.bottomNavigation.menu.add(Menu.NONE, Menu.NONE, Menu.NONE, item.name)
+                when (item.name) {
+                    "Organization" -> menuItem.setIcon(R.drawable.ic_organization)
+                    "Users" -> menuItem.setIcon(R.drawable.ic_users)
+                    "Employees" -> menuItem.setIcon(R.drawable.ic_employees)
+                    "Leaves" -> menuItem.setIcon(R.drawable.ic_leaves)
+                }
+
+
+
             }
         }
     }
+
     override fun onErrorMessage(message: String) {
 
     }

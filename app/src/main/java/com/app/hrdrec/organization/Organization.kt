@@ -36,12 +36,9 @@ class Organization : AppCompatActivity() {
 
         mObj = intent.getSerializableExtra("mObj") as ModuleData
 
-        // Assuming you have a TextView with id textViewEmptyData in your layout
         val emptyDataTextView: TextView = findViewById(R.id.textViewEmptyData)
 
-        // Check if the data is empty
         if (mObj.paths.isEmpty()) {
-            // Show a message indicating that the data is empty
             emptyDataTextView.visibility = View.VISIBLE
         } else {
             // Hide the empty data message
