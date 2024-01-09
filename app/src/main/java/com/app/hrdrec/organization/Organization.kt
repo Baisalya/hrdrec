@@ -22,7 +22,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class OrganizationFragment : Fragment() {
+class Organization : Fragment() {
 
     private val homeViewModel: HomeViewModel by viewModels()
     private lateinit var mObj: ModuleData

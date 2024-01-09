@@ -20,7 +20,7 @@ import com.app.hrdrec.home.getallmodules.Paths
 import com.app.hrdrec.leaves.AllLeavesActivity
 import com.app.hrdrec.login.Login
 import com.app.hrdrec.manager.ManagerAuthorisedActivity
-import com.app.hrdrec.organization.OrganizationFragment
+import com.app.hrdrec.organization.Organization
 import com.app.hrdrec.timesheet.TimeSchedulerActivity
 import com.app.hrdrec.utils.CommonMethods
 import com.google.android.material.tabs.TabLayout
@@ -122,7 +122,7 @@ class HomeActivity : AppCompatActivity(), HomeViewModel.CallBackLogin {
         when (data.name) {
             "Organization" -> {
                 // Create the OrganizationFragment and pass the data
-                val organizationFragment = OrganizationFragment().apply {
+                val organizationFragment = Organization().apply {
                     arguments = Bundle().apply {
                         putSerializable("mObj", data)
                     }
@@ -142,22 +142,36 @@ class HomeActivity : AppCompatActivity(), HomeViewModel.CallBackLogin {
                 if ((moduleSize == 2 || moduleSize == 3) &&
                     (data.name == "Leaves" || data.name == "Timesheets")
                 ) {
-                    val intent = Intent(
-                        this@HomeActivity,
-                        if (data.name == "Leaves") AllLeavesActivity::class.java else TimeSchedulerActivity::class.java
-                    )
-                    intent.putExtra("mObj", data)
-                    startActivity(intent)
+                    // Create the appropriate fragment and replace the current fragment
+                    val fragment = if (data.name == "Leaves") AllLeavesActivity() else TimeSchedulerActivity()
+
+                    // Pass the data to the fragment
+                    val bundle = Bundle().apply {
+                        putSerializable("mObj", data)
+                    }
+                    fragment.arguments = bundle
+
+                    // Replace the current fragment with the selected fragment
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.frameContainer, fragment)
+                        .commit()
                 } else {
-                    val intent = Intent(this@HomeActivity, ManagerAuthorisedActivity::class.java)
-                    intent.putExtra("mObj", data)
-                    intent.putExtra("from", if (data.name == "Leaves") "authLeave" else "authTime")
-                    startActivity(intent)
+                    // Create ManagerAuthorisedFragment and pass data
+                    val fragment = ManagerAuthorisedActivity().apply {
+                        arguments = Bundle().apply {
+                            putSerializable("mObj", data)
+                            putString("from", if (data.name == "Leaves") "authLeave" else "authTime")
+                        }
+
+                    }
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.frameContainer, fragment)
+                        .commit()
                 }
             }
             else -> {
                 // Create the OrganizationFragment and pass the data
-                val organizationFragment = OrganizationFragment().apply {
+                val organizationFragment = Organization().apply {
                     arguments = Bundle().apply {
                         putSerializable("mObj", data)
                     }
