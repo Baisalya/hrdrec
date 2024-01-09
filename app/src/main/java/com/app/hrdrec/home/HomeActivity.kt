@@ -190,8 +190,19 @@ class HomeActivity : AppCompatActivity(), HomeViewModel.CallBackLogin {
             // Add tabs dynamically
             for (module in mList) {
                 val tab = binding.tabLayout.newTab()
-                tab.text = module.name // Assuming 'name' is the property you want to display in tabs
+                tab.text = module.name // A
+                // Set icons based on the module name
+                when (module.name) {
+                    "Organization" -> tab.setIcon(R.drawable.ic_organization)
+                    "User Administration" -> tab.setIcon(R.drawable.ic_users)
+                    "Employees" -> tab.setIcon(R.drawable.ic_employees)
+                    "Users" -> tab.setIcon(R.drawable.ic_users)
+                    "Leave Management", "Leaves", "Timesheets" -> tab.setIcon(R.drawable.ic_leaves)
+                    // Add more cases for other module names if needed
+                    else -> tab.setIcon(R.drawable.ic_more)
+                }
                 binding.tabLayout.addTab(tab)
+
             }
 
             // Update album and drawer adapters
