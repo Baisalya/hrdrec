@@ -1,3 +1,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-
+    <item
+        android:id="@+id/navigation_item1"
+        android:title="Organization"
+        android:icon="@drawable/ic_organization" />
+    <item
+        android:id="@+id/navigation_item2"
+        android:title="Users"
+        android:icon="@drawable/ic_users" />
 </menu>

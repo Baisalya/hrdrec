@@ -36,7 +36,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView2"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="10dp"
             android:layout_weight="1"
             android:layout_margin="15dp"
             android:layout_marginStart="16dp"
@@ -45,13 +45,43 @@
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:orientation="vertical" />
 
-        <!-- Add BottomNavigationView here -->
-        <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/bottom_navigation"
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/toolbar"
+            app:tabGravity="fill"
+            app:tabMode="scrollable" />
+
+        <FrameLayout
+            android:id="@+id/frameContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/tabLayout" />
+
+        <HorizontalScrollView
+            android:id="@+id/horizontalScrollView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom">
+
+            <LinearLayout
+                android:id="@+id/linearBottomNavigation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <!-- Add BottomNavigationView here -->
+            </LinearLayout>
+        </HorizontalScrollView>
+
+        <!-- Add TabLayout here at the bottom -->
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabLayoutBottom"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            app:menu="@menu/bottom_navigation_menu" />
+            app:tabGravity="fill"
+            app:tabMode="scrollable" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 

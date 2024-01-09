@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.FrameLayout
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
@@ -22,6 +23,7 @@ import com.app.hrdrec.manager.ManagerAuthorisedActivity
 import com.app.hrdrec.organization.Organization
 import com.app.hrdrec.timesheet.TimeSchedulerActivity
 import com.app.hrdrec.utils.CommonMethods
+import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -29,6 +31,8 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class HomeActivity : AppCompatActivity(), HomeViewModel.CallBackLogin {
 
+    @Inject
+    lateinit var drawerDataAdapter: ModuleDataAdapter
 
     @Inject
     lateinit var albumDataAdapter: ModuleDataAdapter
@@ -44,6 +48,9 @@ class HomeActivity : AppCompatActivity(), HomeViewModel.CallBackLogin {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+        binding.recyclerView2.adapter = drawerDataAdapter
+        val tabLayout: TabLayout = findViewById(R.id.tabLayout)
+        val frameContainer: FrameLayout = findViewById(R.id.frameContainer)
 
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
@@ -67,44 +74,71 @@ class HomeActivity : AppCompatActivity(), HomeViewModel.CallBackLogin {
         Log.e("Current", "ss $current")
 
 
-fun handleItemClick(data: ModuleData) {
-    Log.e("Data", "onClick" + data.name)
+        fun handleItemClick(data: ModuleData) {
+            Log.e("Data", "onClick" + data.name)
 
-    when (data.name) {
-        "Organization" -> {
-            val intent = Intent(this@HomeActivity, Organization::class.java)
-            intent.putExtra("mObj", data)
-            startActivity(intent)
-        }
-        "User Administration" -> {
-            val admin = Intent(this@HomeActivity, Admin::class.java)
-            admin.putExtra("mObj", data)
-            startActivity(admin)
-        }
-        "Leave Management", "Leaves", "Timesheets" -> {
-            if ((moduleSize == 2 || moduleSize == 3) &&
-                (data.name == "Leaves" || data.name == "Timesheets")
-            ) {
-                val intent = Intent(
-                    this@HomeActivity,
-                    if (data.name == "Leaves") AllLeavesActivity::class.java else TimeSchedulerActivity::class.java
-                )
-                intent.putExtra("mObj", data)
-                startActivity(intent)
-            } else {
-                val intent = Intent(this@HomeActivity, ManagerAuthorisedActivity::class.java)
-                intent.putExtra("mObj", data)
-                intent.putExtra("from", if (data.name == "Leaves") "authLeave" else "authTime")
-                startActivity(intent)
+            // Find the index of the clicked module in the list
+            val tabIndex = homeViewModel.moduleData.value?.indexOf(data) ?: -1
+
+            // If the module is found, select the corresponding tab
+            if (tabIndex != -1) {
+                binding.tabLayout.getTabAt(tabIndex)?.select()
+            }
+
+            // Handle specific actions based on the clicked item
+            when (data.name) {
+                "Organization" -> {
+                    val intent = Intent(this@HomeActivity, Organization::class.java)
+                    intent.putExtra("mObj", data)
+                    startActivity(intent)
+                }
+                "User Administration" -> {
+                    val admin = Intent(this@HomeActivity, Admin::class.java)
+                    admin.putExtra("mObj", data)
+                    startActivity(admin)
+                }
+                "Leave Management", "Leaves", "Timesheets" -> {
+                    if ((moduleSize == 2 || moduleSize == 3) &&
+                        (data.name == "Leaves" || data.name == "Timesheets")
+                    ) {
+                        val intent = Intent(
+                            this@HomeActivity,
+                            if (data.name == "Leaves") AllLeavesActivity::class.java else TimeSchedulerActivity::class.java
+                        )
+                        intent.putExtra("mObj", data)
+                        startActivity(intent)
+                    } else {
+                        val intent = Intent(this@HomeActivity, ManagerAuthorisedActivity::class.java)
+                        intent.putExtra("mObj", data)
+                        intent.putExtra("from", if (data.name == "Leaves") "authLeave" else "authTime")
+                        startActivity(intent)
+                    }
+                }
+                else -> {
+                    val intent = Intent(this@HomeActivity, Organization::class.java)
+                    intent.putExtra("mObj", data)
+                    startActivity(intent)
+                }
             }
         }
-        else -> {
-            val intent = Intent(this@HomeActivity, Organization::class.java)
-            intent.putExtra("mObj", data)
-            startActivity(intent)
-        }
-    }
-}
+        binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                tab?.let {
+                    val selectedModule = homeViewModel.moduleData.value?.get(it.position)
+                    selectedModule?.let { module ->
+                        handleItemClick(module)
+                    }
+                }
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+                // Handle unselected tabs if needed
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+                // Handle reselected tabs if needed
+            }
+        })
 
 // albumDataAdapter
         albumDataAdapter.setItemClick(object : ClickInterface<ModuleData> {
@@ -112,47 +146,11 @@ fun handleItemClick(data: ModuleData) {
                 handleItemClick(data)
             }
         })
-
-//  bottomNavigation
-        binding.bottomNavigation.setOnNavigationItemSelectedListener { menuItem ->
-            val itemName = menuItem.title.toString()
-
-            val data = when (itemName) {
-                "Organization" -> {
-                    val organizationPaths = listOf(
-                        Paths(3, "Organization Profile", false, "/organizationProfiles"),
-                        Paths(4, "Locations", false, "/locationList"),
-                        Paths(5, "Holiday Calendars", false, "/holidayCalendarList"),
-                        Paths(6, "Leave Types", false, "/leaveTypeList"),
-                        Paths(7, "Email Templates", false, "/emailTemplateList"),
-                        Paths(10, "Clients", false, "/clientList"),
-                        Paths(11, "Projects", false, "/projectList"),
-                        Paths(18, "Expense Categories", false, "/expenses")
-                    )
-                    ModuleData(id = 1, name = itemName, description = "This is organization module", paths = ArrayList(organizationPaths))
-                }
-                "Users" -> {
-                    val usersPaths = listOf(
-                        Paths(12, "Roles", false, "/roleList"),
-                        Paths(13, "Users", false, "/userList")
-                    )
-                    ModuleData(id = 2, name = itemName, description = "This is User administration module", paths = ArrayList(usersPaths))
-                }
-                "Employees" -> {
-                    val employeesPaths = listOf(
-                        Paths(8, "Employees", false, "/employeeList"),
-                        Paths(9, "Leave Balances", false, "/leaveBalances")
-                    )
-                    ModuleData(id = 3, name = itemName, description = "This is Employees module", paths = ArrayList(employeesPaths))
-                }
-                // Add other cases as needed
-                else -> ModuleData(name = itemName)
+        drawerDataAdapter.setItemClick(object : ClickInterface<ModuleData> {
+            override fun onClick(data: ModuleData) {
+                handleItemClick(data)
             }
-
-            handleItemClick(data)  // This line is calling handleItemClick for bottomNavigation item
-
-            true
-        }
+        })
 
     }
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -184,22 +182,20 @@ fun handleItemClick(data: ModuleData) {
         homeViewModel.moduleData.observe(this) { mList ->
             moduleSize = mList.size
             Log.d("TAG", "Module Data Received: ${mList.size}")
-            albumDataAdapter.updateAlbumData(mList)
 
-            binding.bottomNavigation.menu.clear()
+            // Clear existing tabs
+            binding.tabLayout.removeAllTabs()
 
-            for (item in mList) {
-                val menuItem = binding.bottomNavigation.menu.add(Menu.NONE, Menu.NONE, Menu.NONE, item.name)
-                when (item.name) {
-                    "Organization" -> menuItem.setIcon(R.drawable.ic_organization)
-                    "Users" -> menuItem.setIcon(R.drawable.ic_users)
-                    "Employees" -> menuItem.setIcon(R.drawable.ic_employees)
-                    "Leaves" -> menuItem.setIcon(R.drawable.ic_leaves)
-                }
-
-
-
+            // Add tabs dynamically
+            for (module in mList) {
+                val tab = binding.tabLayout.newTab()
+                tab.text = module.name // Assuming 'name' is the property you want to display in tabs
+                binding.tabLayout.addTab(tab)
             }
+
+            // Update album and drawer adapters
+            albumDataAdapter.updateAlbumData(mList)
+            drawerDataAdapter.updateAlbumData(mList)
         }
     }
 
