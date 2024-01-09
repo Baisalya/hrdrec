@@ -12,7 +12,7 @@ import com.app.hrdrec.home.HomeViewModel
 import com.app.hrdrec.home.ModuleDataAdapter
 import com.app.hrdrec.home.getallmodules.ModuleData
 import com.app.hrdrec.leaves.AllLeavesActivity
-import com.app.hrdrec.organization.Organization
+import com.app.hrdrec.organization.OrganizationFragment
 import com.app.hrdrec.timesheet.TimeSchedulerActivity
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject

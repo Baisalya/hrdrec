@@ -3,11 +3,12 @@ package com.app.hrdrec.organization
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
-import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import com.app.hrdrec.R
 import com.app.hrdrec.databinding.ActivityOrganizationBinding
 import com.app.hrdrec.home.HomeViewModel
@@ -19,24 +20,31 @@ import com.app.hrdrec.organization.holidaycalander.HolidayCalendar
 import com.app.hrdrec.organization.locations.Location
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
+
 @AndroidEntryPoint
-class Organization : AppCompatActivity() {
+class OrganizationFragment : Fragment() {
 
     private val homeViewModel: HomeViewModel by viewModels()
-
-    lateinit var mObj: ModuleData
-    private val binding by lazy { ActivityOrganizationBinding.inflate(layoutInflater) }
+    private lateinit var mObj: ModuleData
+    private lateinit var binding: ActivityOrganizationBinding
 
     @Inject
     lateinit var albumDataAdapter: OrganizationDataAdapter
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(binding.root)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = ActivityOrganizationBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
-        mObj = intent.getSerializableExtra("mObj") as ModuleData
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        val emptyDataTextView: TextView = findViewById(R.id.textViewEmptyData)
+        mObj = arguments?.getSerializable("mObj") as ModuleData
+
+        val emptyDataTextView: TextView = binding.root.findViewById(R.id.textViewEmptyData)
 
         if (mObj.paths.isEmpty()) {
             emptyDataTextView.visibility = View.VISIBLE
@@ -49,29 +57,26 @@ class Organization : AppCompatActivity() {
 
             albumDataAdapter.setItemClick(object : ClickInterfaceOrgan<Paths> {
                 override fun onClick(data: Paths) {
-                    Log.e("Data","org"+data.name)
+                    Log.e("Data", "org" + data.name)
                     //AlbumDetailActivity.launchActivity(this@ShowAlbumActivity,data)
                     when (data.name) {
 
                         "Locations" -> {
-                            val intent = Intent(this@Organization, Location::class.java)
+                            val intent = Intent(requireContext(), Location::class.java)
                             intent.putExtra("id", mObj.id)
                             startActivity(intent)
-
                         }
 
                         "Holiday Calendars" -> {
-                            val admin = Intent(this@Organization, HolidayCalendar::class.java)
-                            intent.putExtra("mObj", data)
+                            val admin = Intent(requireContext(), HolidayCalendar::class.java)
+                            admin.putExtra("mObj", data)
                             startActivity(admin)
-
                         }
 
                         "Clients" -> {
-                            val intent = Intent(this@Organization, Clients::class.java)
+                            val intent = Intent(requireContext(), Clients::class.java)
                             intent.putExtra("id", mObj.id)
                             startActivity(intent)
-
                         }
 
                         else -> {
@@ -83,8 +88,3 @@ class Organization : AppCompatActivity() {
         }
     }
 }
-
-
-
-
-

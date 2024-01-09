@@ -20,7 +20,7 @@ import com.app.hrdrec.home.getallmodules.Paths
 import com.app.hrdrec.leaves.AllLeavesActivity
 import com.app.hrdrec.login.Login
 import com.app.hrdrec.manager.ManagerAuthorisedActivity
-import com.app.hrdrec.organization.Organization
+import com.app.hrdrec.organization.OrganizationFragment
 import com.app.hrdrec.timesheet.TimeSchedulerActivity
 import com.app.hrdrec.utils.CommonMethods
 import com.google.android.material.tabs.TabLayout
@@ -105,6 +105,7 @@ class HomeActivity : AppCompatActivity(), HomeViewModel.CallBackLogin {
             }
         })
 
+
     }
     private fun handleItemClick(data: ModuleData) {
         Log.e("Data", "onClick" + data.name)
@@ -120,9 +121,17 @@ class HomeActivity : AppCompatActivity(), HomeViewModel.CallBackLogin {
         // Handle specific actions based on the clicked item
         when (data.name) {
             "Organization" -> {
-                val intent = Intent(this@HomeActivity, Organization::class.java)
-                intent.putExtra("mObj", data)
-                startActivity(intent)
+                // Create the OrganizationFragment and pass the data
+                val organizationFragment = OrganizationFragment().apply {
+                    arguments = Bundle().apply {
+                        putSerializable("mObj", data)
+                    }
+                }
+
+                // Replace the current fragment with OrganizationFragment
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.frameContainer, organizationFragment)
+                    .commit()
             }
             "User Administration" -> {
                 val admin = Intent(this@HomeActivity, Admin::class.java)
@@ -147,9 +156,16 @@ class HomeActivity : AppCompatActivity(), HomeViewModel.CallBackLogin {
                 }
             }
             else -> {
-                val intent = Intent(this@HomeActivity, Organization::class.java)
-                intent.putExtra("mObj", data)
-                startActivity(intent)
+                // Create the OrganizationFragment and pass the data
+                val organizationFragment = OrganizationFragment().apply {
+                    arguments = Bundle().apply {
+                        putSerializable("mObj", data)
+                    }
+                }
+                // Replace the current fragment with OrganizationFragment
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.frameContainer, organizationFragment)
+                    .commit()
             }
         }
     }
