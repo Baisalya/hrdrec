@@ -31,8 +31,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class HomeActivity : AppCompatActivity(), HomeViewModel.CallBackLogin {
 
-    @Inject
-    lateinit var drawerDataAdapter: ModuleDataAdapter
+
 
     @Inject
     lateinit var albumDataAdapter: ModuleDataAdapter
@@ -44,11 +43,15 @@ class HomeActivity : AppCompatActivity(), HomeViewModel.CallBackLogin {
 
     private val binding by lazy { ActivityHomeBinding.inflate(layoutInflater) }
 
-
+    private fun handleTabSelection(tab: TabLayout.Tab) {
+        val selectedModule = homeViewModel.moduleData.value?.get(tab.position)
+        selectedModule?.let { module ->
+            handleItemClick(module)
+        }
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        binding.recyclerView2.adapter = drawerDataAdapter
         val tabLayout: TabLayout = findViewById(R.id.tabLayout)
         val frameContainer: FrameLayout = findViewById(R.id.frameContainer)
 
@@ -74,61 +77,13 @@ class HomeActivity : AppCompatActivity(), HomeViewModel.CallBackLogin {
         Log.e("Current", "ss $current")
 
 
-        fun handleItemClick(data: ModuleData) {
-            Log.e("Data", "onClick" + data.name)
-
-            // Find the index of the clicked module in the list
-            val tabIndex = homeViewModel.moduleData.value?.indexOf(data) ?: -1
-
-            // If the module is found, select the corresponding tab
-            if (tabIndex != -1) {
-                binding.tabLayout.getTabAt(tabIndex)?.select()
-            }
-
-            // Handle specific actions based on the clicked item
-            when (data.name) {
-                "Organization" -> {
-                    val intent = Intent(this@HomeActivity, Organization::class.java)
-                    intent.putExtra("mObj", data)
-                    startActivity(intent)
-                }
-                "User Administration" -> {
-                    val admin = Intent(this@HomeActivity, Admin::class.java)
-                    admin.putExtra("mObj", data)
-                    startActivity(admin)
-                }
-                "Leave Management", "Leaves", "Timesheets" -> {
-                    if ((moduleSize == 2 || moduleSize == 3) &&
-                        (data.name == "Leaves" || data.name == "Timesheets")
-                    ) {
-                        val intent = Intent(
-                            this@HomeActivity,
-                            if (data.name == "Leaves") AllLeavesActivity::class.java else TimeSchedulerActivity::class.java
-                        )
-                        intent.putExtra("mObj", data)
-                        startActivity(intent)
-                    } else {
-                        val intent = Intent(this@HomeActivity, ManagerAuthorisedActivity::class.java)
-                        intent.putExtra("mObj", data)
-                        intent.putExtra("from", if (data.name == "Leaves") "authLeave" else "authTime")
-                        startActivity(intent)
-                    }
-                }
-                else -> {
-                    val intent = Intent(this@HomeActivity, Organization::class.java)
-                    intent.putExtra("mObj", data)
-                    startActivity(intent)
-                }
-            }
-        }
         binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 tab?.let {
-                    val selectedModule = homeViewModel.moduleData.value?.get(it.position)
-                    selectedModule?.let { module ->
-                        handleItemClick(module)
-                    }
+                    // Call the handleTabSelection method only when a tab is explicitly clicked
+                    handleTabSelection(it)
                 }
+
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {
@@ -139,20 +94,66 @@ class HomeActivity : AppCompatActivity(), HomeViewModel.CallBackLogin {
                 // Handle reselected tabs if needed
             }
         })
-
+        if (binding.tabLayout.selectedTabPosition == TabLayout.Tab.INVALID_POSITION) {
+            // Select your desired default tab here, for example, the first tab
+            binding.tabLayout.getTabAt(0)?.select()
+        }
 // albumDataAdapter
         albumDataAdapter.setItemClick(object : ClickInterface<ModuleData> {
             override fun onClick(data: ModuleData) {
                 handleItemClick(data)
             }
         })
-        drawerDataAdapter.setItemClick(object : ClickInterface<ModuleData> {
-            override fun onClick(data: ModuleData) {
-                handleItemClick(data)
-            }
-        })
 
     }
+    private fun handleItemClick(data: ModuleData) {
+        Log.e("Data", "onClick" + data.name)
+
+        // Find the index of the clicked module in the list
+        val tabIndex = homeViewModel.moduleData.value?.indexOf(data) ?: -1
+
+        // If the module is found, select the corresponding tab
+        if (tabIndex != -1) {
+            binding.tabLayout.getTabAt(tabIndex)?.select()
+        }
+
+        // Handle specific actions based on the clicked item
+        when (data.name) {
+            "Organization" -> {
+                val intent = Intent(this@HomeActivity, Organization::class.java)
+                intent.putExtra("mObj", data)
+                startActivity(intent)
+            }
+            "User Administration" -> {
+                val admin = Intent(this@HomeActivity, Admin::class.java)
+                admin.putExtra("mObj", data)
+                startActivity(admin)
+            }
+            "Leave Management", "Leaves", "Timesheets" -> {
+                if ((moduleSize == 2 || moduleSize == 3) &&
+                    (data.name == "Leaves" || data.name == "Timesheets")
+                ) {
+                    val intent = Intent(
+                        this@HomeActivity,
+                        if (data.name == "Leaves") AllLeavesActivity::class.java else TimeSchedulerActivity::class.java
+                    )
+                    intent.putExtra("mObj", data)
+                    startActivity(intent)
+                } else {
+                    val intent = Intent(this@HomeActivity, ManagerAuthorisedActivity::class.java)
+                    intent.putExtra("mObj", data)
+                    intent.putExtra("from", if (data.name == "Leaves") "authLeave" else "authTime")
+                    startActivity(intent)
+                }
+            }
+            else -> {
+                val intent = Intent(this@HomeActivity, Organization::class.java)
+                intent.putExtra("mObj", data)
+                startActivity(intent)
+            }
+        }
+    }
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
 
         menuInflater.inflate(R.menu.logmenu, menu)
@@ -195,7 +196,6 @@ class HomeActivity : AppCompatActivity(), HomeViewModel.CallBackLogin {
 
             // Update album and drawer adapters
             albumDataAdapter.updateAlbumData(mList)
-            drawerDataAdapter.updateAlbumData(mList)
         }
     }
 

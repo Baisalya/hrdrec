@@ -44,20 +44,25 @@
             android:layout_marginBottom="@dimen/_15sdp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:orientation="vertical" />
-
+        <FrameLayout
+            android:id="@+id/frameContainer"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:layout_below="@id/tabLayout" />
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/toolbar"
             app:tabGravity="fill"
-            app:tabMode="scrollable" />
+            app:tabMode="scrollable"
+            app:tabIconTint="@drawable/tab_selected"
+            app:tabRippleColor="@android:color/transparent"
+            app:tabSelectedTextColor="@color/design_default_color_primary"
+            />
 
-        <FrameLayout
-            android:id="@+id/frameContainer"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@id/tabLayout" />
+
+
 
         <HorizontalScrollView
             android:id="@+id/horizontalScrollView"
