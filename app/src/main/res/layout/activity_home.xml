@@ -49,20 +49,6 @@
             android:layout_width="match_parent"
             android:layout_height="70dp"
             android:layout_below="@id/tabLayout" />
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tabLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/toolbar"
-            app:tabGravity="fill"
-            app:tabMode="scrollable"
-            app:tabIconTint="@drawable/tab_selected"
-            app:tabRippleColor="@android:color/transparent"
-            app:tabSelectedTextColor="@color/design_default_color_primary"
-            />
-
-
-
 
         <HorizontalScrollView
             android:id="@+id/horizontalScrollView"
@@ -81,7 +67,7 @@
 
         <!-- Add TabLayout here at the bottom -->
         <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tabLayoutBottom"
+            android:id="@+id/tabLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
