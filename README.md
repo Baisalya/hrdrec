@@ -30,8 +30,9 @@ List key features of your project. For example:
 
 
 
-https://github.com/Baisalya/hrdrec/assets/84311059/3b7b1bc1-5197-4cf8-940d-e72b7d410c19
 
+https://github.com/Baisalya/hrdrec/assets/84311059/3b7b1bc1-5197-4cf8-940d-e72b7d410c19
+![WhatsApp Image 2024-01-12 at 11 29 27_f9d0bdd8](https://github.com/Baisalya/hrdrec/assets/84311059/06c7e27d-f444-4fc5-8a06-fb3f9848d84b)
 
 ## Getting Started
 
