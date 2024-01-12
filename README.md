@@ -29,6 +29,10 @@ List key features of your project. For example:
 ## Screenshots
 
 
+
+https://github.com/Baisalya/hrdrec/assets/84311059/3b7b1bc1-5197-4cf8-940d-e72b7d410c19
+
+
 ## Getting Started
 
 Provide information on how to get the project up and running on a local machine.
@@ -37,7 +41,7 @@ Provide information on how to get the project up and running on a local machine.
 
 List any prerequisites or dependencies that users need to install before using your project. For example:
 - Android Studio
-- InfyShine API key
+- InfyShine API key "*******************************************************************"
 
 ### Installation
 
