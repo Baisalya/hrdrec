@@ -1,77 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FFFFFF"
     tools:context=".login.Login">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+    <!-- Company logo -->
+<ImageView
+android:id="@+id/logo"
+android:layout_width="250dp"
+android:layout_height="120dp"
+android:layout_marginTop="32dp"
+android:layout_marginBottom="16dp"
+android:src="@drawable/img"
+app:layout_constraintTop_toTopOf="parent"
+app:layout_constraintBottom_toTopOf="@+id/loginpage"
+app:layout_constraintStart_toStartOf="parent"
+app:layout_constraintEnd_toEndOf="parent"
+    />
 
+    <!-- Login Page Text -->
+<TextView
+android:id="@+id/loginpage"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="Login Here"
+android:textColor="#2196F3"
+android:textSize="30sp"
+android:textStyle="bold"
+android:layout_marginTop="32dp"
+app:layout_constraintTop_toBottomOf="@+id/logo"
+app:layout_constraintStart_toStartOf="parent"
+app:layout_constraintEnd_toEndOf="parent"
+    />
 
-        <TextView
-            android:id="@+id/loginpage"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10sp"
-            android:gravity="center"
-            android:text="Login Page"
-            android:textColor="@color/black"
-            android:textSize="40sp"
-            app:layout_constraintBottom_toTopOf="@+id/usn"
-            app:layout_constraintTop_toTopOf="parent" />
+    <!-- Username EditText -->
+<EditText
+android:id="@+id/usn"
+android:layout_width="0dp"
+android:layout_height="50dp"
+android:layout_marginTop="16dp"
+android:layout_marginStart="16dp"
+android:layout_marginEnd="16dp"
+android:background="@drawable/edittext_background"
+    android:hint="Username"
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp"
+    android:textSize="16sp"
+    app:layout_constraintTop_toBottomOf="@+id/loginpage"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    />
 
-       <!-- android:text="Android"-->
-<!--// android:text="Employee 002"-->
-       <!-- android:text="Active Manager"-->
-        <EditText
-            android:id="@+id/usn"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_margin="15dp"
-            android:hint="Username: "
-            tools:ignore="MissingConstraints"
-            tools:layout_editor_absoluteX="5dp"
-            tools:layout_editor_absoluteY="161dp" />
-        <!--android:text="vnG1Uq"-->
-       <!-- android:text="INFY@123"-->
-       <!-- android:text="cR4lQS"-->
-        <EditText
-            android:id="@+id/pwd"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_margin="15dp"
-            android:layout_marginTop="52dp"
-            android:hint="Password: "
-            app:layout_constraintTop_toBottomOf="@+id/usn"
-            tools:ignore="MissingConstraints"
-            tools:layout_editor_absoluteX="5dp" />
+    <!-- Password EditText -->
+<EditText
+android:id="@+id/pwd"
+android:layout_width="0dp"
+android:layout_height="60dp"
+android:layout_margin="16dp"
+android:hint="Password"
+android:background="@drawable/edittext_background"
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp"
+    android:textSize="16sp"
+    app:layout_constraintTop_toBottomOf="@+id/usn"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    />
 
+    <!-- Remember Me CheckBox -->
+<CheckBox
+android:id="@+id/cbRememberMe"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="Remember Me"
+app:layout_constraintTop_toBottomOf="@+id/pwd"
+app:layout_constraintStart_toStartOf="parent"
+    />
 
-
-        <CheckBox
-            android:id="@+id/cbRememberMe"
-            android:layout_margin="15dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Remember Me"/>
-
-        <Button
-            android:id="@+id/login"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="15sp"
-            android:text="Login"
-            android:textSize="35dp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/pwd"
-            app:layout_constraintVertical_bias="0.168"
-            tools:layout_editor_absoluteX="16dp" />
-
-    </LinearLayout>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <!-- Login Button -->
+<Button
+android:id="@+id/login"
+android:layout_width="0dp"
+android:layout_height="50dp"
+android:layout_marginTop="16dp"
+android:layout_marginStart="16dp"
+android:layout_marginEnd="16dp"
+android:text="Login"
+android:textSize="18sp"
+android:textStyle="bold"
+android:background="@drawable/button_background"
+    android:textColor="@android:color/white"
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp"
+    app:layout_constraintTop_toBottomOf="@id/cbRememberMe"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    />
+    </androidx.constraintlayout.widget.ConstraintLayout>
