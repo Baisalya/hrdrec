@@ -3,7 +3,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="176dp"
-    android:background="@color/purple_700"
+    android:background="@drawable/bg4"
     android:gravity="bottom"
     android:padding="16dp"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
@@ -18,7 +18,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Infyshine Technologies"
-        android:textColor="@color/white"
+        android:textColor="#FCFDFD"
         android:textStyle="bold" />
 
 </LinearLayout>

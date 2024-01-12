@@ -102,6 +102,8 @@ class HomeActivity : AppCompatActivity(), HomeViewModel.CallBackLogin {
         albumDataAdapter.setItemClick(object : ClickInterface<ModuleData> {
             override fun onClick(data: ModuleData) {
                 handleItemClick(data)
+                closeDrawer()
+
             }
         })
 
@@ -184,6 +186,11 @@ class HomeActivity : AppCompatActivity(), HomeViewModel.CallBackLogin {
         }
     }
 
+    private fun closeDrawer() {
+        val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
+        drawerLayout.closeDrawer(GravityCompat.END)
+    }
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
 
         menuInflater.inflate(R.menu.logmenu, menu)
@@ -202,6 +209,9 @@ class HomeActivity : AppCompatActivity(), HomeViewModel.CallBackLogin {
                     startActivity(intent)
                     finish()
                 }
+                // Close the drawer after performing the action
+                val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
+                drawerLayout.closeDrawer(GravityCompat.END)
             }
         }
 

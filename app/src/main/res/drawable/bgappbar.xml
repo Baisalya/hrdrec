@@ -7,9 +7,9 @@
         <shape android:shape="rectangle">
             <gradient
                 android:startColor="#3498db"
-                android:endColor="#2c3e50"
+                android:endColor="#273A4C"
                 android:type="linear"
-                android:angle="45"/>
+                android:angle="15"/>
         </shape>
     </item>
 
@@ -23,7 +23,7 @@
             <size android:width="1dp" android:height="1dp"/>
             <bitmap
                 android:src="@drawable/acrylic_texture"
-            android:tileMode="repeat"/>
+                android:tileMode="repeat"/>
         </shape>
     </item>
 

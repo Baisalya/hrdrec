@@ -15,7 +15,7 @@
         android:layout_margin="15dp"
         android:gravity="center"
         android:text="ORGANIZATION PATHS"
-        android:textColor="@color/black"
+        android:textColor="@color/light_grey"
         android:textSize="30dp"
         android:textStyle="bold"
         tools:ignore="MissingConstraints"

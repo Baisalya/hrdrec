@@ -21,26 +21,32 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary" />
+            android:background="@drawable/bg4"
+            app:titleTextColor="@color/light_grey"
+            android:elevation="4dp"
+            app:subtitleTextColor="@android:color/darker_gray"
+            app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+
 
         <!-- TextView for displaying text on the homepage -->
-        <TextView
+       <!-- <TextView
             android:id="@+id/textHomePage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="This is HOMEPAGE"
             android:textSize="18sp"
-            android:textColor="@android:color/black"/>
+            android:textColor="@android:color/black"/>-->
 
         <FrameLayout
             android:id="@+id/frameContainer"
             android:layout_width="match_parent"
             android:layout_height="10dp"
             android:layout_weight="1"
-            android:layout_margin="15dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="52dp"
+            android:layout_margin="0dp"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="0dp"
             android:layout_marginBottom="@dimen/_15sdp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:orientation="vertical" />
@@ -68,7 +74,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             app:tabGravity="fill"
-            app:tabMode="scrollable" />
+            app:tabMode="scrollable"
+            app:tabBackground="@drawable/tab_selector"/>
+
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
